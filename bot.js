@@ -1,8 +1,18 @@
 // API Token Telegram
 const token = '468346940:AAG7gFh1nIeJuZkuj81E1EmzIj1Y76-pFJg';
 
-var Bot = require('node-telegram-bot-api'),
-    bot = new Bot(token, { polling: true });
+
+
+var Bot = require('node-telegram-bot-api');
+var bot;
+
+if(process.env.NODE_ENV === 'production') {
+  bot = new Bot(token);
+  bot.setWebHook('https://afdzcbookexample.herokuapp.com/' + bot.token);
+}
+else {
+  bot = new Bot(token, { polling: true });
+}
 
 console.log('bot server started...');
 
@@ -24,3 +34,5 @@ bot.onText(/^\/sum((\s+\d+)+)$/, function (msg, match) {
     // reply sent!
   });
 });
+
+module.exports = bot;
